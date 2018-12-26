@@ -1,0 +1,33 @@
+{
+  "name": "game-of-life",
+  "private": true,
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/idiotWu/game-of-life.git"
+  },
+  "author": "Dolphin Wood <dolphin.w.e@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/idiotWu/game-of-life/issues"
+  },
+  "homepage": "https://github.com/idiotWu/game-of-life#readme",
+  "dependencies": {
+    "lodash": "^4.17.11",
+    "progress": "^2.0.3",
+    "ts-node": "^7.0.1"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.119",
+    "@types/node": "^10.12.18",
+    "@types/progress": "^2.0.3",
+    "tslint": "^5.12.0",
+    "tslint-config-standard": "^8.0.1",
+    "typescript": "^3.2.2"
+  }
+}

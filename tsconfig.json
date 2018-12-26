@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": [
+      "ESNext"
+    ],
+    "moduleResolution": "node",
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "newLine": "lf"
+  },
+  "exclude": [
+    "node_modules",
+    "build",
+    "dist"
+  ]
+}
