@@ -4,8 +4,8 @@
 
 ## Install
 
-1. Clone this repository `git clone git@github.com:idiotWu/game-of-life.git`
-2. Install npm dependecies `npm install`
+1. Clone this repository: `git clone git@github.com:idiotWu/game-of-life.git`
+2. Install npm dependencies: `npm install`
 
 ## Usage
 
@@ -22,7 +22,7 @@ Options:
   --step <n>        Set the value to increase initial density by, default is 10
 ```
 
-For example, the folloing command generates a 300*300 world:
+For example, the following command generates a 300*300 world:
 
 ```bash
 npm start -- --size 300
