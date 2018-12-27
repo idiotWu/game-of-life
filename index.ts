@@ -38,8 +38,6 @@ const options = {
   },
 };
 
-console.log(options, commander.range);
-
 async function run() {
   for (let i = from; i <= to; i += step) {
     const opt = Object.assign({}, options);
