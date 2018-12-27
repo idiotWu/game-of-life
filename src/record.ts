@@ -1,7 +1,5 @@
 import { CELL_STATE } from './world';
 
-const THRESHOLD = 0.999;
-
 export class Record {
   pattern: CELL_STATE[][][] = null;
   patternSize: number = 0;
@@ -32,7 +30,7 @@ export class Record {
 
     const { length } = memory;
     const latest = memory[length - 1];
-    const path: CELL_STATE[][][] = [latest];
+    const path: CELL_STATE[][][] = [];
 
     let hasSame = false;
 
@@ -56,30 +54,18 @@ export class Record {
   }
 
   compare(a: CELL_STATE[][], b: CELL_STATE[][]) {
-    const { dataSize } = this;
-
-    let sameCell = 0;
-    let aliveCount = 0;
+    const {
+      dataSize,
+    } = this;
 
     for (let y = 0; y < dataSize; y++) {
       for (let x = 0; x < dataSize; x++) {
-        const ca = a[y][x];
-        const cb = b[y][x];
-
-        if (ca !== CELL_STATE.ALIVE && cb !== CELL_STATE.ALIVE) {
-          continue;
-        }
-
-        aliveCount++;
-
-        if (ca === cb) {
-          sameCell++;
+        if (a[y][x] !== b[y][x]) {
+          return false;
         }
       }
     }
 
-    const similarity = sameCell / aliveCount;
-
-    return similarity >= THRESHOLD;
+    return true;
   }
 }

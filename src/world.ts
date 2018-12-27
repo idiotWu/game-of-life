@@ -50,18 +50,21 @@ export class World {
       next.push(row);
 
       for (let x = 0; x < size; x++) {
-        const aliveCount = this.getAliveCount(x, y);
-        let state = cells[y][x];
+        switch (this.aliveNeighbors(x, y)) {
+          case 2:
+            // stays same state
+            row.push(cells[y][x]);
+            break;
 
-        if (aliveCount < 2 || aliveCount > 3) {
-          state = CELL_STATE.DEAD;
+          case 3:
+            // keeps or turns alive
+            row.push(CELL_STATE.ALIVE);
+            break;
+
+          default:
+            // otherwise dies
+            row.push(CELL_STATE.DEAD);
         }
-
-        if (aliveCount === 3) {
-          state = CELL_STATE.ALIVE;
-        }
-
-        row.push(state);
       }
     }
 
@@ -69,6 +72,25 @@ export class World {
     this.generation++;
 
     return next;
+  }
+
+  getAlivePercentage() {
+    const {
+      size,
+      cells,
+    } = this;
+
+    let remain: number = 0;
+
+    for (let y = 0; y < size; y++) {
+      for (let x = 0; x < size; x++) {
+        if (cells[y][x] === CELL_STATE.ALIVE) {
+          remain++;
+        }
+      }
+    }
+
+    return remain / (size * size) * 100;
   }
 
   private init(size: number, alivePercentage: number) {
@@ -100,7 +122,7 @@ export class World {
     return idx;
   }
 
-  private getAliveCount(x: number, y: number) {
+  private aliveNeighbors(x: number, y: number) {
     let aliveCount = 0;
 
     for (let i = -1; i <= 1; i++) {

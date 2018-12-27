@@ -9,7 +9,6 @@
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noUnusedLocals": true,
-    "noImplicitAny": true,
     "sourceMap": true,
     "newLine": "lf"
   },
