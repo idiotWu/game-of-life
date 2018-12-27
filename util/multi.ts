@@ -91,5 +91,5 @@ async function save(outDir: string, filename: string, data: any[][]) {
 
   await fs.promises.writeFile(`${outDir}/${filename}`, buffer);
 
-  console.log(`saved results to ${outDir}/${filename}\n\n`);
+  console.log(`\nsaved results to ${outDir}/${filename}\n\n`);
 }
