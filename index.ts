@@ -20,8 +20,8 @@ commander
   .option('--threads <n>', `Set the number of multi-threads, default is ${defaultOptions.threads}`, toInt)
   .option('--size <n>', `Set world size, default is ${defaultOptions.size}`, toInt)
   .option('--count <n>', `Set the number of worlds, default is ${defaultOptions.count}`, toInt)
-  .option('--range <a>..<b>', `Set the range of initial alive cell percentage, default is ${JSON.stringify(defaultOptions.range)}`, toRange)
-  .option('--step <n>', `Set the value to increase initial percentage by, default is ${defaultOptions.step}`, toInt)
+  .option('--range <a>..<b>', `Set the range of initial alive cell density, default is ${JSON.stringify(defaultOptions.range)}`, toRange)
+  .option('--step <n>', `Set the value to increase initial density by, default is ${defaultOptions.step}`, toInt)
   .parse(process.argv);
 
 const from = (commander.range || defaultOptions.range)[0];
@@ -34,14 +34,14 @@ const options = {
   worldCount: commander.count || defaultOptions.count,
   worldOptions: {
     size: commander.size || defaultOptions.size,
-    initialPercentage: from,
+    initialDensity: from,
   },
 };
 
 async function run() {
   for (let i = from; i <= to; i += step) {
     const opt = Object.assign({}, options);
-    opt.worldOptions.initialPercentage = i;
+    opt.worldOptions.initialDensity = i;
     await multiThreads(opt);
   }
 }

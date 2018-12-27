@@ -11,7 +11,7 @@ type Options = {
 
   worldOptions: {
     size?: number,
-    initialPercentage?: number,
+    initialDensity?: number,
   },
 };
 
@@ -32,7 +32,7 @@ export async function multiThreads({
   });
 
   console.log(`world size: ${worldOptions.size} * ${worldOptions.size}`);
-  console.log(`initial alive cell percentage: ${worldOptions.initialPercentage}`);
+  console.log(`initial alive cell percentage: ${worldOptions.initialDensity}`);
   console.log(`number of worlds: ${worldCount}`);
   console.log(`threads: ${threads}`);
 
@@ -61,7 +61,7 @@ export async function multiThreads({
 
   await Promise.all(children);
 
-  const filename = `${worldOptions.size}-ip-${worldOptions.initialPercentage}-wc-${worldCount}.xlsx`;
+  const filename = `${worldOptions.size}-ip-${worldOptions.initialDensity}-wc-${worldCount}.xlsx`;
 
   await save(outDir, filename, data);
 }

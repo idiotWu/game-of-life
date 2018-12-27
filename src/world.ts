@@ -10,12 +10,12 @@ type CELL_MAP = CELL_STATE[][];
 type WorldOptions = {
   cells?: CELL_MAP,
   size?: number,
-  initialPercentage?: number,
+  initialDensity?: number,
 };
 
 const defaultOptions: WorldOptions = {
   size: 100,
-  initialPercentage: 10,
+  initialDensity: 10,
 };
 
 export class World {
@@ -26,13 +26,13 @@ export class World {
   constructor({
     cells,
     size = defaultOptions.size,
-    initialPercentage = defaultOptions.initialPercentage,
+    initialDensity = defaultOptions.initialDensity,
   }: WorldOptions = defaultOptions) {
     if (cells) {
       this.cells = cells;
       this.size = cells.length;
     } else {
-      this.init(size, initialPercentage);
+      this.init(size, initialDensity);
     }
   }
 
@@ -74,7 +74,7 @@ export class World {
     return next;
   }
 
-  getAlivePercentage() {
+  getAliveDensity() {
     const {
       size,
       cells,
@@ -127,6 +127,7 @@ export class World {
 
     for (let i = -1; i <= 1; i++) {
       for (let j = -1; j <= 1; j++) {
+        // skip self
         if (i === 0 && j === 0) {
           continue;
         }
@@ -134,7 +135,6 @@ export class World {
         const rx = this.normalizeIndex(x + i);
         const ry = this.normalizeIndex(y + j);
 
-        // skip self
         if (this.cells[ry][rx] === CELL_STATE.ALIVE) {
           aliveCount++;
         }
