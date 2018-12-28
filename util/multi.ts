@@ -32,7 +32,7 @@ export async function multiThreads({
   });
 
   console.log(`world size: ${worldOptions.size} * ${worldOptions.size}`);
-  console.log(`initial alive cell percentage: ${worldOptions.initialDensity}`);
+  console.log(`initial density of alive cells: ${worldOptions.initialDensity}%`);
   console.log(`number of worlds: ${worldCount}`);
   console.log(`threads: ${threads}`);
 
