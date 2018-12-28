@@ -6,7 +6,6 @@ export enum CELL_STATE {
 }
 
 type WorldOptions = {
-  cells?: Uint8Array,
   size?: number,
   initialDensity?: number,
 };
@@ -22,16 +21,10 @@ export class World {
   generation: number = 0;
 
   constructor({
-    cells,
     size = defaultOptions.size,
     initialDensity = defaultOptions.initialDensity,
   }: WorldOptions = defaultOptions) {
-    if (cells) {
-      this.cells = Uint8Array.from(cells);
-      this.size = this.cells.length;
-    } else {
-      this.init(size, initialDensity);
-    }
+    this.init(size, initialDensity);
   }
 
   next() {
@@ -90,9 +83,9 @@ export class World {
     return remain / (size * size) * 100;
   }
 
-  private init(size: number, alivePercentage: number) {
+  private init(size: number, initialDensity: number) {
     const total = size * size;
-    const alive = (alivePercentage / 100) * total | 0;
+    const alive = (initialDensity / 100) * total | 0;
 
     const cells: CELL_STATE[] = shuffle(new Array(total - alive)
       .fill(CELL_STATE.DEAD)

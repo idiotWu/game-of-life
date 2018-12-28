@@ -3,11 +3,11 @@ import { Record } from '../src/record';
 
 const MAX_GENERATION = 1e4;
 
-process.on('message', ({ type, options, count }) => {
+process.on('message', ({ type, worldOptions, count }) => {
   if (type !== 'gol') return;
 
   for (let i = 0; i < count; i++) {
-    const world = new World(options);
+    const world = new World(worldOptions);
 
     const record = new Record<typeof world.cells>(10, world.size);
 
