@@ -5,10 +5,8 @@ export enum CELL_STATE {
   ALIVE,
 }
 
-type CELL_MAP = CELL_STATE[][];
-
 type WorldOptions = {
-  cells?: CELL_MAP,
+  cells?: Uint8Array,
   size?: number,
   initialDensity?: number,
 };
@@ -20,7 +18,7 @@ const defaultOptions: WorldOptions = {
 
 export class World {
   size: number;
-  cells: CELL_MAP;
+  cells: Uint8Array;
   generation: number = 0;
 
   constructor({
@@ -29,8 +27,8 @@ export class World {
     initialDensity = defaultOptions.initialDensity,
   }: WorldOptions = defaultOptions) {
     if (cells) {
-      this.cells = cells;
-      this.size = cells.length;
+      this.cells = Uint8Array.from(cells);
+      this.size = this.cells.length;
     } else {
       this.init(size, initialDensity);
     }
@@ -43,27 +41,26 @@ export class World {
       cells,
     } = this;
 
-    const next: CELL_MAP = [];
+    const next: Uint8Array = new Uint8Array(size * size);
 
     for (let y = 0; y < size; y++) {
-      const row: CELL_STATE[] = [];
-      next.push(row);
-
       for (let x = 0; x < size; x++) {
+        const idx = y * size + x;
+
         switch (this.aliveNeighbors(x, y)) {
           case 2:
             // stays same state
-            row.push(cells[y][x]);
+            next[idx] = cells[idx];
             break;
 
           case 3:
             // keeps or turns alive
-            row.push(CELL_STATE.ALIVE);
+            next[idx] = CELL_STATE.ALIVE;
             break;
 
           default:
             // otherwise dies
-            row.push(CELL_STATE.DEAD);
+            next[idx] = CELL_STATE.DEAD;
         }
       }
     }
@@ -84,7 +81,7 @@ export class World {
 
     for (let y = 0; y < size; y++) {
       for (let x = 0; x < size; x++) {
-        if (cells[y][x] === CELL_STATE.ALIVE) {
+        if (cells[y * size + x] === CELL_STATE.ALIVE) {
           remain++;
         }
       }
@@ -97,14 +94,12 @@ export class World {
     const total = size * size;
     const alive = (alivePercentage / 100) * total | 0;
 
-    const cells1d: CELL_STATE[] = shuffle(new Array(total - alive)
+    const cells: CELL_STATE[] = shuffle(new Array(total - alive)
       .fill(CELL_STATE.DEAD)
       .concat(new Array(alive).fill(CELL_STATE.ALIVE)),
     );
 
-    this.cells = Array.from(new Array(size), () => {
-      return cells1d.splice(0, size);
-    });
+    this.cells = Uint8Array.from(cells);
 
     this.size = size;
   }
@@ -123,6 +118,8 @@ export class World {
   }
 
   private aliveNeighbors(x: number, y: number) {
+    const { size } = this;
+
     let aliveCount = 0;
 
     for (let i = -1; i <= 1; i++) {
@@ -135,7 +132,7 @@ export class World {
         const rx = this.normalizeIndex(x + i);
         const ry = this.normalizeIndex(y + j);
 
-        if (this.cells[ry][rx] === CELL_STATE.ALIVE) {
+        if (this.cells[ry * size + rx] === CELL_STATE.ALIVE) {
           aliveCount++;
         }
       }

@@ -1,22 +1,50 @@
-import { CELL_STATE } from './world';
+type Node<T extends ArrayLike<any>> = {
+  data: T,
+  prev: Node<T> | null,
+  next: Node<T> | null,
+};
 
-export class Record {
-  pattern: CELL_STATE[][][] = null;
+function createNode<T extends ArrayLike<any>>(data: T): Node<T> {
+  const node: Node<T> = Object.create(null);
+  node.data = data;
+
+  return node;
+}
+
+export class Record<T extends ArrayLike<any>> {
+  pattern: T[] = null;
   patternSize: number = 0;
 
-  private memory: CELL_STATE[][][] = [];
+  private count: number = 0;
+  private head: Node<T> = null;
+  private tail: Node<T> = null;
 
   constructor(
     public readonly size: number,
-    public readonly dataSize: number,
+    public readonly mapWidth: number,
   ) {}
 
-  add(data: CELL_STATE[][]) {
-    if (this.memory.length === this.size) {
-      this.memory.shift();
+  add(data: T) {
+    const node = createNode(data);
+
+    if (!this.count) {
+      node.prev = node.next = null;
+      this.head = this.tail = node;
+      this.count++;
+      return;
     }
 
-    this.memory.push(data);
+    node.prev = this.tail;
+    this.tail.next = node;
+    node.next = null;
+    this.tail = node;
+
+    if (this.count === this.size) {
+      this.head = this.head.next;
+      this.head.prev = null;
+    } else {
+      this.count++;
+    }
   }
 
   getPattern() {
@@ -24,18 +52,14 @@ export class Record {
       return this.pattern;
     }
 
-    const {
-      memory,
-    } = this;
-
-    const { length } = memory;
-    const latest = memory[length - 1];
-    const path: CELL_STATE[][][] = [];
+    const path: T[] = [];
+    const latest = this.tail.data;
 
     let hasSame = false;
+    let node = this.tail.prev;
 
-    for (let i = length - 2; i >= 0; i--) {
-      const data = memory[i];
+    while (node) {
+      const { data } = node;
 
       path.push(data);
 
@@ -43,6 +67,8 @@ export class Record {
         hasSame = true;
         break;
       }
+
+      node = node.prev;
     }
 
     if (hasSame) {
@@ -53,14 +79,16 @@ export class Record {
     return hasSame ? path : null;
   }
 
-  compare(a: CELL_STATE[][], b: CELL_STATE[][]) {
+  compare(a: T, b: T) {
     const {
-      dataSize,
+      mapWidth,
     } = this;
 
-    for (let y = 0; y < dataSize; y++) {
-      for (let x = 0; x < dataSize; x++) {
-        if (a[y][x] !== b[y][x]) {
+    for (let y = 0; y < mapWidth; y++) {
+      for (let x = 0; x < mapWidth; x++) {
+        const idx = y * mapWidth + x;
+
+        if (a[idx] !== b[idx]) {
           return false;
         }
       }

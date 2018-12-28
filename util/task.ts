@@ -9,7 +9,7 @@ process.on('message', ({ type, options, count }) => {
   for (let i = 0; i < count; i++) {
     const world = new World(options);
 
-    const record = new Record(10, world.size);
+    const record = new Record<typeof world.cells>(10, world.size);
 
     while (world.generation < MAX_GENERATION) {
       record.add(world.next());
