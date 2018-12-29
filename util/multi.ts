@@ -22,7 +22,7 @@ export async function multiThreads({
   worldOptions,
 }: Options) {
   const data: any[][] = [
-    ['Generation', 'Survival Rate', 'Repeating Pattern Size'],
+    ['Generation', 'Cell Density', 'Repeating Pattern Size'],
   ];
 
   const bar = new ProgressBar('[:bar] :current/:total :elapseds', {
@@ -51,7 +51,7 @@ export async function multiThreads({
           return;
         }
 
-        data.push([msg.generation, msg.survivalRate, msg.patternSize]);
+        data.push([msg.generation, msg.density, msg.patternSize]);
         bar.tick();
       });
     });
@@ -61,7 +61,7 @@ export async function multiThreads({
 
   await Promise.all(children);
 
-  const filename = `${worldOptions.size}-ip-${worldOptions.initialDensity}-wc-${worldCount}.xlsx`;
+  const filename = `s-${worldOptions.size}-d-${worldOptions.initialDensity}-c-${worldCount}.xlsx`;
 
   await save(outDir, filename, data);
 }

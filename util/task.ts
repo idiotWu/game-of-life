@@ -22,7 +22,7 @@ process.on('message', ({ type, worldOptions, count }) => {
     process.send({
       type: 'tick',
       generation: world.generation,
-      survivalRate: world.getAliveDensity(),
+      density: world.getAliveDensity(),
       patternSize: record.patternSize,
     });
   }
