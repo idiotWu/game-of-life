@@ -7,6 +7,7 @@ import { fork, ChildProcess } from 'child_process';
 type Options = {
   outDir: string,
   threads: number,
+  recordSize: number,
   worldCount: number,
 
   worldOptions: {
@@ -18,6 +19,7 @@ type Options = {
 export async function multiThreads({
   outDir,
   threads,
+  recordSize,
   worldCount,
   worldOptions,
 }: Options) {
@@ -34,6 +36,7 @@ export async function multiThreads({
   console.log(`world size: ${worldOptions.size} * ${worldOptions.size}`);
   console.log(`initial density of alive cells: ${worldOptions.initialDensity}%`);
   console.log(`number of worlds: ${worldCount}`);
+  console.log(`record size: ${recordSize}`);
   console.log(`threads: ${threads}`);
 
   const children: Promise<any>[] = [];
@@ -42,6 +45,7 @@ export async function multiThreads({
     const promise = forkPromise(path.resolve(__dirname, './task.ts'), (process) => {
       process.send({
         worldOptions,
+        recordSize,
         type: 'gol',
         count: worldCount / threads | 0,
       });

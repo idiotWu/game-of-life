@@ -9,6 +9,7 @@ const defaultOptions = {
   count: 1000,
   range: [10, 90],
   step: 10,
+  records: 10,
 };
 
 const toInt = v => parseInt(v, 10);
@@ -22,6 +23,7 @@ commander
   .option('--count <n>', `Set the number of worlds, default is ${defaultOptions.count}`, toInt)
   .option('--range <a>..<b>', `Set the range of initial alive cell density, default is ${JSON.stringify(defaultOptions.range)}`, toRange)
   .option('--step <n>', `Set the value to increase initial density by, default is ${defaultOptions.step}`, toInt)
+  .option('--records <n>', `Set the maximum number of records, default is ${defaultOptions.records}`, toInt)
   .parse(process.argv);
 
 const from = (commander.range || defaultOptions.range)[0];
@@ -31,6 +33,7 @@ const step = commander.step || defaultOptions.step;
 const options = {
   outDir: commander.outDir || defaultOptions.outDir,
   threads: commander.threads || defaultOptions.threads,
+  recordSize: commander.records || defaultOptions.records,
   worldCount: commander.count || defaultOptions.count,
   worldOptions: {
     size: commander.size || defaultOptions.size,
