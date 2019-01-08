@@ -18,6 +18,7 @@ const defaultOptions: WorldOptions = {
 export class World {
   size: number;
   cells: Uint8Array;
+  aliveCellCount: number;
   generation: number = 0;
 
   constructor({
@@ -35,6 +36,7 @@ export class World {
     } = this;
 
     const next: Uint8Array = new Uint8Array(size * size);
+    let aliveCellCount = 0;
 
     for (let y = 0; y < size; y++) {
       for (let x = 0; x < size; x++) {
@@ -55,11 +57,16 @@ export class World {
             // otherwise dies
             next[idx] = CELL_STATE.DEAD;
         }
+
+        if (next[idx] === CELL_STATE.ALIVE) {
+          aliveCellCount++;
+        }
       }
     }
 
-    this.cells = next;
     this.generation++;
+    this.cells = next;
+    this.aliveCellCount = aliveCellCount;
 
     return next;
   }

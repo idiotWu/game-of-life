@@ -9,10 +9,11 @@ process.on('message', ({ type, worldOptions, count }) => {
   for (let i = 0; i < count; i++) {
     const world = new World(worldOptions);
 
-    const record = new Record<typeof world.cells>(10, world.size);
+    const record = new Record<typeof world.cells>(world.size * 5, world.size);
 
     while (world.generation < MAX_GENERATION) {
-      record.add(world.next());
+      world.next();
+      record.add(world.aliveCellCount, world.cells);
 
       if (record.getPattern()) {
         break;

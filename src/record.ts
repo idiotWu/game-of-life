@@ -1,12 +1,17 @@
 type Node<T extends ArrayLike<any>> = {
   data: T,
+  identifier: number,
   prev: Node<T> | null,
   next: Node<T> | null,
 };
 
-function createNode<T extends ArrayLike<any>>(data: T): Node<T> {
+function createNode<T extends ArrayLike<any>>(
+  identifier: number,
+  data: T,
+): Node<T> {
   const node: Node<T> = Object.create(null);
   node.data = data;
+  node.identifier = identifier;
 
   return node;
 }
@@ -24,8 +29,8 @@ export class Record<T extends ArrayLike<any>> {
     public readonly mapWidth: number,
   ) {}
 
-  add(data: T) {
-    const node = createNode(data);
+  add(identifier: number, data: T) {
+    const node = createNode(identifier, data);
 
     if (!this.count) {
       node.prev = node.next = null;
@@ -53,17 +58,17 @@ export class Record<T extends ArrayLike<any>> {
     }
 
     const path: T[] = [];
-    const latest = this.tail.data;
+    const latestID = this.tail.identifier;
 
     let hasSame = false;
     let node = this.tail.prev;
 
     while (node) {
-      const { data } = node;
+      const { identifier, data } = node;
 
       path.push(data);
 
-      if (this.compare(latest, data)) {
+      if (latestID === identifier && this.compare(this.tail.data, data)) {
         hasSame = true;
         break;
       }
