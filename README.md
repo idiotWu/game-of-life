@@ -13,13 +13,14 @@
 Usage: npm start -- [options]
 
 Options:
-  -V, --version     output the version number
   --out-dir <dir>   Set output directory, default to ./stat
   --threads <n>     Set the number of multi-threads, default is 4
-  --size <n>        Set world size, default is 50
+  --size <n>        Set world size, default is 100
   --count <n>       Set the number of worlds, default is 1000
   --range <a>..<b>  Set the range of initial alive cell density, default is [10,90]
   --step <n>        Set the value to increase initial density by, default is 10
+  --records <n>     Set the maximum number of records, default is 10
+  -h, --help        output usage information
 ```
 
 For example, the following command generates a 300*300 world:
